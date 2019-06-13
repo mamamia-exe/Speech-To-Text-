@@ -1,10 +1,10 @@
 <html>
 <head>
-   <title>NoSwearZone</title>
+   <title>Speech SDK JavaScript Quickstart</title>
 </head>
 <body>
  <!-- UI code goes here -->
-		<div id="warning">
+	<div id="warning">
   <h1 style="font-weight:500;">Speech Recognition Speech SDK not found (microsoft.cognitiveservices.speech.sdk.bundle.js missing).</h1>
 </div>
 
@@ -27,7 +27,7 @@
       <td><button id="startRecognizeOnceAsyncButton">Start recognition</button></td>
     </tr>
     <tr>
-      <td id="Results" align="right" valign="top">Results</td>
+      <td align="right" valign="top">Results</td>
       <td><textarea id="phraseDiv" style="display: inline-block;width:500px;height:200px"></textarea></td>
     </tr>
   </table>
@@ -38,30 +38,24 @@
  <!-- Optional authorization token request goes here -->
 
  <!-- Sample code goes here -->
- <!-- Speech SDK Authorization token -->
  <!-- Speech SDK USAGE -->
 <script>
   // status fields and start button in UI
-  var phraseDiv; 
+  var phraseDiv;
   var startRecognizeOnceAsyncButton;
-
   // subscription key and region for speech services.
   var subscriptionKey, serviceRegion;
   var authorizationToken;
   var SpeechSDK;
   var recognizer;
-  var resultText;
-  
   document.addEventListener("DOMContentLoaded", function () {
     startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
     subscriptionKey = document.getElementById("subscriptionKey");
     serviceRegion = document.getElementById("serviceRegion");
     phraseDiv = document.getElementById("phraseDiv");
-	
     startRecognizeOnceAsyncButton.addEventListener("click", function () {
       startRecognizeOnceAsyncButton.disabled = true;
       phraseDiv.innerHTML = "";
-
       // if we got an authorization token, use the token. Otherwise use the provided subscription key
       var speechConfig;
       if (authorizationToken) {
@@ -73,54 +67,34 @@
         }
         speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
       }
-
       speechConfig.speechRecognitionLanguage = "en-US";
       var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
       recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-
       recognizer.recognizeOnceAsync(
         function (result) {
           startRecognizeOnceAsyncButton.disabled = false;
           phraseDiv.innerHTML += result.text;
-		  resultText = result.text;
           window.console.log(result);
-		  
           recognizer.close();
-          recognizer = undefined;
+		  recognizer = undefined; 
         },
         function (err) {
           startRecognizeOnceAsyncButton.disabled = false;
           phraseDiv.innerHTML += err;
           window.console.log(err);
-
           recognizer.close();
-          recognizer = undefined;
+		  recognizer = undefined; 
         });
     });
-	
     if (!!window.SpeechSDK) {
       SpeechSDK = window.SpeechSDK;
       startRecognizeOnceAsyncButton.disabled = false;
-
       document.getElementById('content').style.display = 'block';
       document.getElementById('warning').style.display = 'none';
-	  
-	  
+      // in case we have a function for getting an authorization token, call it.
+ 
     }
   });
-  var a = 'frick';
-  var b = 'heck'
-  var c = 'poop'
-  
-  var frickcount = return a.indexOf(resultText) > -1;
-  var heckcount = return b.indexOf(resultText) > - 1;
-  var poopcount = return c.indexOf(resultText) > -1;
-  
-  console.log(frickcount); 
-  console.log(heckcount);
-  poopcount(poopcount);
 </script>
-
-
 </body>
-</html>
+</html> 
